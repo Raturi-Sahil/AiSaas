@@ -1,9 +1,9 @@
 import React from 'react'
 
-function GenerateImage() {
+function GenerateImages() {
   return (
-    <div>GenerateImage</div>
+    <div>GenerateImages</div>
   )
 }
 
-export default GenerateImage
+export default GenerateImages
