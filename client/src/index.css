@@ -11,3 +11,7 @@
 @theme {
     --color-primary: #5044E5;
 }
+
+/* html, body {
+  overscroll-behavior: none;    disables bounce entirely 
+} */
