@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 * {
-     font-family: "Roboto", sans-serif;
+     font-family: "Outfit", sans-serif;
 }
 
 
@@ -12,6 +12,9 @@
     --color-primary: #5044E5;
 }
 
+.reset-tw, .reset-tw *{
+  all: revert !important
+}
 /* html, body {
   overscroll-behavior: none;    disables bounce entirely 
 } */
