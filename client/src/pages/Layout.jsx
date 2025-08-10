@@ -11,7 +11,7 @@ function Layout() {
   const navigate  = useNavigate();
 
   return user ? (
-    <div className='flex flex-col items-start justify-start h-screen'>
+    <div className='flex flex-col items-start justify-start h-screen transition-all duration-900 ease-in-out'>
       <nav className='px-8 w-full h-16 flex items-center justify-between border-b border-gray-200'>
         <img src={assets.logo} alt="logo" className='w-32 sm:w-40 cursor-pointer' onClick={() => navigate('/')}/>
         { sidebar? <X onClick={()=> setSidebar(false)} className='w-6 h-6 text-gray-600 sm:hidden'/>: <Menu onClick={()=> setSidebar(true)} className='w-6 h-6 text-gray-600 sm:hidden'/>}

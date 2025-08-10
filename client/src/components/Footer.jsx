@@ -15,7 +15,7 @@ function Footer() {
     }
   return (
    <div>
-         <div className='grid sm:grid-cols-5 md:grid-cols-9 gap-4 mx-10 md:mx-15 py-5 border-b border-gray-300 max-sm:mx-28'>
+         <div className='grid sm:grid-cols-5 md:grid-cols-9 gap-4 mx-15 md:mx-15 py-5 border-b border-gray-300'>
         <div className='sm:col-span-4 md:col-span-3 lg:col-span-4 sm:mr-8 max-w-md'>
             <img src={assets.logo} alt="logo" className='cursor-pointer' onClick={handleClick}/>
             <p className='text-gray-500 text-sm my-5'>
