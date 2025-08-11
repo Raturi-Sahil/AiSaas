@@ -22,7 +22,7 @@ function WriteArticle() {
       <form onSubmit={onSubmitHandler} className='w-full max-w-lg p-5 bg-white border border-gray-200 rounded-lg'>
           <div className='flex items-center gap-3'>
             <Sparkles className='w-6 text-[#4A7AFF]' />
-            <h1 className='text-xl font-semibold'>Article Configuration</h1>
+            <h1 className='text-xl font-semibold'>AI Article Writer</h1>
           </div>
           <p className='mt-6 text-sm font-medium'>Article Topic</p>
           <input 
