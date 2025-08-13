@@ -27,7 +27,9 @@ function GenerateImages() {
           <textarea 
           onChange={(e)=> setInput(e.target.value)}
           type="text" 
-          className='w-full h-30 border border-gray-200 p-2 rounded-md mt-2 text-sm outline-none' 
+          value={input}
+          rows={4}
+          className='w-full border border-gray-200 p-2 rounded-md mt-2 text-sm outline-none' 
           placeholder='Describe what you want to see in the image..' required />
           <p className='mt-6 text-sm font-medium'>Style</p>
           <div className='mt-2 text-xs flex flex-wrap gap-3'>

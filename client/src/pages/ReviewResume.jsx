@@ -17,15 +17,12 @@ function ReviewResume() {
             <h1 className='text-xl font-semibold'>Resume Review</h1>
           </div>
           <p className='mt-6 text-sm font-medium'>Upload Resume</p>
-          <div className='mt-2 flex gap-1 border border-gray-200 rounded-md text-xs'>
-            <button className='px-2 border-r border-gray-200 cursor-pointer hover:scale-102 hover:shadow-sm bg-gray-100 transition'>Choose File</button>
-            <input 
-              onChange={(e)=> setInput(e.target.value)}
-              type="text" 
-              className='flex-1 outline-none p-3' 
-              placeholder='No file chosen' required/>
-
-          </div>
+        <input 
+              onChange={(e)=> setInput(e.target.files[0])}
+              type="file" 
+              accept='application/pdf'
+              className='w-full outline-none p-2 px-3 text-sm border border-gray-300 text-gray-600 mt-2 rounded-md cursor-pointer' 
+              required/>
           <p className='mt-1 text-xs font-extralight'>Supports PDF, PNG, JPG formats</p>
 
           <button className='mt-6 flex gap-3 w-full bg-gradient-to-r from-[#00da83] to-[#009bb3] rounded-lg p-2 justify-center items-center text-white cursor-pointer text-sm'>
