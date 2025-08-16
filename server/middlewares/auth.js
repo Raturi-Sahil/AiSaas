@@ -6,13 +6,19 @@ import { clerkClient } from "@clerk/express";
 
 export const auth = async (req, res, next) => {
     try {
-        const [ userId, has ] = await req.auth();
+        console.log('inside the auth middlewares');
+        console.log(req.body);
+        const { userId, has } = await req.auth();
+        
         const hasPremiumPlan = await has({plan: 'premium'});
-
+        
         const user = await clerkClient.users.getUser(userId);
-        if(!hasPremiumPlan && req.privateMetadata.free_usage) {
-            req.free_usage = req.privateMetadata.free_usage;
-        } else {
+        
+        
+        //This if says if the uesr doesn't have a premium plan but he's used some of his limit say 1 or 2 times an not a new comer. 
+        if(!hasPremiumPlan && user.privateMetadata.free_usage) {
+            req.free_usage = user.privateMetadata.free_usage;
+        } else {//This else block says the user doesn't have an premium plan and the user is using this api for the first time that's why it's free_uage is 0. 
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     free_usage: 0

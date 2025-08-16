@@ -1,17 +1,25 @@
 import express from "express";
 import cors from "cors";
 import { clerkMiddleware, requireAuth } from '@clerk/express'
+import aiRouter from "./routes/aiRoutes.js";
+
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(clerkMiddleware());
-app.use(requireAuth());
 
 app.get('/', (req, res) => {
     res.send({msg: "Server is live"});
 });
+
+app.use(requireAuth());
+// This middleware should come below the / route cuz, a person who is visiting our app for the first time shouldn't be directly directed towards the login page.
+
+app.use('/api/ai', aiRouter);
+
+
 
 const PORT =  process.env.PORT || 3000;
 
