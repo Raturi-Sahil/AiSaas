@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import { Home, Layout, Dashboard, WriteArticle, BlogTitles, GenerateImages, RemoveBackground, RemoveObject, ReviewResume, Community} from './pages/index';
+import { useAuth } from '@clerk/clerk-react';
+
 
 function App() {
+  const { getToken } = useAuth();
+
+  useEffect(()=> {
+    getToken().then((token) => console.log(token));
+  }, []);
   return (
     <div>
       <Routes>
