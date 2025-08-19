@@ -48,7 +48,7 @@ function BlogTitles() {
           </div>
           <button className='mt-6 flex gap-3 w-full bg-gradient-to-r from-[#d270f8] to-[#8e36eb] rounded-lg p-2 justify-center items-center text-white cursor-pointer text-sm'>
               <Hash className='w-5'/>
-              <p>Generate article</p>
+              <p>Generate title</p>
           </button>
           
       </form>
