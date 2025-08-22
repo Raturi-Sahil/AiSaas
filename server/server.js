@@ -3,6 +3,7 @@ import cors from "cors";
 import { clerkMiddleware, requireAuth } from '@clerk/express'
 import aiRouter from "./routes/aiRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
+import userRouter from "./routes/userRoutes.js";
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(requireAuth());
 // This middleware should come below the / route cuz, a person who is visiting our app for the first time shouldn't be directly directed towards the login page.
 
 app.use('/api/ai', aiRouter);
+app.use('/api/user', userRouter);
 
 
 

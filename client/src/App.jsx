@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import { Home, Layout, Dashboard, WriteArticle, BlogTitles, GenerateImages, RemoveBackground, RemoveObject, ReviewResume, Community} from './pages/index';
-import { useAuth } from '@clerk/clerk-react';
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
-  const { getToken } = useAuth();
-
-  useEffect(()=> {
-    getToken().then((token) => console.log(token));
-  }, []);
   return (
     <div>
+      <Toaster />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/ai' element={<Layout />}>

@@ -14,6 +14,7 @@ const AI = new OpenAI({
 
 
 export const generateArticle = async (req, res) => {
+    console.log("check 1");
     try {
         const { userId } = req.auth;
         const { prompt, length } = req.body;
@@ -36,11 +37,11 @@ export const generateArticle = async (req, res) => {
             temperature: 0.7,
             max_tokens: length
         });
-
+        console.log("check 2");
         const content = response.choices[0].message.content;
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${prompt}, ${content}, 'article')`;
-
+        console.log("check 3");
         if(plan != 'premium') {
             await clerkClient.users.updateUserMetadata(userId, {
                 privateMetadata: {
@@ -48,9 +49,11 @@ export const generateArticle = async (req, res) => {
                 }
             })
         }
-
-        res.json({success: true, message: content});
+        console.log("check 4");
+        res.json({success: true, content});
+        console.log("check 5");
     } catch (error) {
+        console.log("check 6");
         console.log(error.message);
         res.json({success: false, message: error.message});
     }
@@ -230,7 +233,7 @@ export const resumeReview = async (req, res) => {
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')`;
 
-        res.json({success: true, content: content});
+        res.json({success: true, content: content}); // can also be written as just content, this is object property shorthand in js.
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});
