@@ -6,8 +6,6 @@ import { clerkClient } from "@clerk/express";
 
 export const auth = async (req, res, next) => {
     try {
-        console.log('inside the auth middlewares');
-        console.log(req.body);
         const { userId, has } = await req.auth();
         
         const hasPremiumPlan = await has({plan: 'premium'});

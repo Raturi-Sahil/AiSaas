@@ -1,5 +1,5 @@
-import { SquarePen, Sparkles, Edit } from 'lucide-react'
-import React, { useState } from 'react'
+import {Sparkles, Edit } from 'lucide-react'
+import { useState } from 'react'
 import axios from 'axios'
 import { useAuth } from '@clerk/clerk-react'
 import toast from 'react-hot-toast';

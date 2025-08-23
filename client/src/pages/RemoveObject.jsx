@@ -1,12 +1,41 @@
 import { Sparkles, Scissors } from 'lucide-react'
 import { useState } from 'react'
+import axios from 'axios'
+import { useAuth } from '@clerk/clerk-react'
+import toast from 'react-hot-toast';
+
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 function RemoveObject() {
+
  const [ input, setInput ] = useState('');
  const [ object, setObject ] = useState('');
+ const [ loading, setLoading ] = useState(false);
+  const [ content, setContent ] = useState('');
+  const { getToken } = useAuth();
 
   const onSubmitHandler = async (e) => {
       e.preventDefault();
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append('image', input);
+        formData.append('object', object);
+
+        const { data } = await axios.post('/api/ai/remove-image-object', formData, {
+          headers: {Authorization: `Bearer ${await getToken()}`}
+        });
+        if(data.success) {
+          setContent(data.content);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+      setLoading(false);
+
   }
 
   return (
@@ -35,8 +64,11 @@ function RemoveObject() {
           </textarea>
           <p className='mt-1 text-xs font-extralight'>Be specific about what you want to remove</p>
 
-          <button className='mt-6 flex gap-3 w-full bg-gradient-to-r from-[#417df6] to-[#8d38eb] rounded-lg p-2 justify-center items-center text-white cursor-pointer text-sm'>
-              <Scissors className='w-5'/>
+          <button 
+          disabled={loading}
+          className='mt-6 flex gap-3 w-full bg-gradient-to-r from-[#417df6] to-[#8d38eb] rounded-lg p-2 justify-center items-center text-white cursor-pointer text-sm'>
+              {loading?  <span className='w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin'>
+              </span>: <Scissors className='w-5'/>}
               <p>Remove Object</p>
           </button>
           
@@ -48,12 +80,18 @@ function RemoveObject() {
               <Scissors className='w-5 h-5 text-[#4a7aff]' />
               <h1 className='text-xl font-semibold'>Processed Image</h1>
             </div>
-            <div className='flex-1 flex justify-center items-center'>
-                <div className='text-sm flex flex-col items-center gap-5 text-gray-400'>
+             {!content ? (
+                <div className='flex-1 flex justify-center items-center'>
+                  <div className='text-sm flex flex-col items-center gap-5 text-gray-400'>
                   <Scissors className='w-10 h-10' />
                   <p>Upload an image and click "Remove object" to get started</p>
+                  </div>
                 </div>
-            </div>
+            ): (
+              <div className='mt-3 h-full'>
+                  <img src={content} alt='image' className='w-full max-h-[400px] object-contain' />
+              </div>
+            )}
         </div>
     </div>
   )

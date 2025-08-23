@@ -16,7 +16,7 @@ function Layout() {
         <img src={assets.logo} alt="logo" className='w-32 sm:w-40 cursor-pointer' onClick={() => navigate('/')}/>
         { sidebar? <X onClick={()=> setSidebar(false)} className='w-6 h-6 text-gray-600 sm:hidden'/>: <Menu onClick={()=> setSidebar(true)} className='w-6 h-6 text-gray-600 sm:hidden'/>}
       </nav>
-      <div className='flex-1 w-full flex h-[calc(100vh-64px)]'>
+      <div className='flex-1 w-full flex h-[calc(100vh-64px)] overflow-y-scroll'>
             <Sidebar sidebar={sidebar} setSidebar={setSidebar}/>
             <div className='flex-1 bg-[#F4F7FB]'>
                <Outlet />

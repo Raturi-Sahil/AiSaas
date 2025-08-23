@@ -16,7 +16,7 @@ const AI = new OpenAI({
 export const generateArticle = async (req, res) => {
     console.log("check 1");
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const { prompt, length } = req.body;
         const plan = req.plan;
         const free_usage = req.free_usage;
@@ -63,12 +63,13 @@ export const generateArticle = async (req, res) => {
 // either the above syntax or export {controller name}
 
 export const generateBlogTitle = async (req, res) => {
+    console.log("check 1");
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const { prompt } = req.body;
         const plan = req.plan;
         const free_usage = req.free_usage;
-
+        console.log("check 1");
         if(plan != 'premium' && req.free_usage >= 10) {
             return res.json({success: false, message: "Limit reached. Upgrade to continue."})
         }
@@ -83,7 +84,7 @@ export const generateBlogTitle = async (req, res) => {
                 },
             ],
             temperature: 0.7,
-            max_tokens: 100
+            max_tokens: 250,
         });
 
         const content = response.choices[0].message.content;
@@ -98,7 +99,7 @@ export const generateBlogTitle = async (req, res) => {
             })
         }
 
-        res.json({success: true, message: content});
+        res.json({success: true, content});
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});
@@ -107,7 +108,7 @@ export const generateBlogTitle = async (req, res) => {
 
 export const generateImage = async (req, res) => {
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const { prompt, publish } = req.body;
         const plan = req.plan;
 
@@ -139,7 +140,7 @@ export const generateImage = async (req, res) => {
 
 export const removeBackgroundImage = async (req, res) => {
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const image = req.file;
         const plan = req.plan;
 
@@ -169,7 +170,7 @@ export const removeBackgroundImage = async (req, res) => {
 }
 export const removeImageObject = async (req, res) => {
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const { object } = req.body;
         const image = req.file;
         const plan = req.plan;
@@ -183,12 +184,11 @@ export const removeImageObject = async (req, res) => {
         const { public_id } = await cloudinary.uploader.upload(image.path);
 
         const imageUrl = cloudinary.url(public_id, {
-            transformation: [{effect: `gen_remove: ${object}`}],
+            transformation: [{effect: `gen_remove:${object}`}],
             resource_type: 'image'
         })
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image')`;
-
         res.json({success: true, content: imageUrl});
     } catch (error) {
         console.log(error.message);
@@ -197,7 +197,7 @@ export const removeImageObject = async (req, res) => {
 }
 export const resumeReview = async (req, res) => {
     try {
-        const { userId } = req.auth;
+        const { userId } = req.auth();
         const resume = req.file;
         const plan = req.plan;
 
@@ -214,7 +214,7 @@ export const resumeReview = async (req, res) => {
         const dataBuffer = fs.readFileSync(resume.path);
         const pdfData = await pdf(dataBuffer);
 
-        const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfData.text}`;
+        const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Write the review within 900 tokens and at the end provide summary. Resume content:\n\n${pdfData.text}`;
 
               // Make the request
         const response = await AI.chat.completions.create({
@@ -233,7 +233,7 @@ export const resumeReview = async (req, res) => {
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')`;
 
-        res.json({success: true, content: content}); // can also be written as just content, this is object property shorthand in js.
+        res.json({success: true, content}); // can also be written as just content, this is object property shorthand in js.
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});

@@ -15,6 +15,7 @@
 .reset-tw, .reset-tw *{
   all: revert !important;
 }
+
 /* html, body {
   overscroll-behavior: none;    disables bounce entirely 
 } */
