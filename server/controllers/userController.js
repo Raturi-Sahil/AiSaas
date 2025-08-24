@@ -3,25 +3,29 @@ import sql from "../configs/db.js";
 
 export const getUserCreations = async (req, res) => {
     try {
-        const { user_id } = req.auth;
-        const creations = await sql `SELECT * FROM cretions WHERE user_id=${user_id} ORDER BY created_at DESC`;
+        const { userId } = req.auth();
+        const creations = await sql `SELECT * FROM creations WHERE user_id=${userId} ORDER BY created_at DESC`;
         res.json({success: true, creations});
     } catch (error) {
         res.json({success: false, message: error.message});
     }
 }
 
-export const getPublishedCerations = async (req, res) => {
+export const getPublishedCreations = async (req, res) => {
     try {
-        const creations = await sql `SELECT * FROM cretions WHERE publish = true ORDER BY created_at DESC`;
+        const creations = await sql `SELECT * FROM creations WHERE publish = true ORDER BY created_at DESC`;
+        console.log('checks1')
         res.json({success: true, creations});
+        console.log('checks2')
     } catch (error) {
+        console.log('checks')
         res.json({success: false, message: error.message});
     }
 }
 export const toggleLikeCreation = async (req, res) => {
     try {
-        const { user_id } = req.auth;
+        console.log(req.auth());
+        const { userId } = req.auth();
         const { id } = req.body;
 
         const [ creation ] = await sql `SELECT * FROM creations WHERE id = ${id}`
@@ -31,11 +35,11 @@ export const toggleLikeCreation = async (req, res) => {
         }
 
         const currentLikes = creation.likes;
-        const userIdStr = user_id.toString();
+        const userIdStr = userId.toString();
         let updatedLikes;
         let message;
 
-        if(currentLikes.includes(user_id)) {
+        if(currentLikes.includes(userIdStr)) {
             updatedLikes = currentLikes.filter((user) => user != userIdStr);
             message = 'Creation Unliked';
         } else {
@@ -43,9 +47,10 @@ export const toggleLikeCreation = async (req, res) => {
             message = 'Creation Liked';
         }
 
-        const formattedArray = `{${updatedLikes.json(',')}}`
-        await sql `UPDATE creations SET likes = ${formattedArray}:: text[] WHERE id = ${id}`
-
+        // const formattedArray = `{${updatedLikes.join(',')}}`
+        await sql `UPDATE creations SET likes = ${updatedLikes}:: text[] WHERE id = ${id}`
+        
+        console.log(message);
         res.json({success: true, message});
 
     } catch (error) {

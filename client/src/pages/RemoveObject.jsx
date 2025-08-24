@@ -19,6 +19,10 @@ function RemoveObject() {
       e.preventDefault();
       setLoading(true);
       try {
+
+        if(object.split(',').length > 1) {
+          return toast('Please enter only one object name.')
+        }
         const formData = new FormData();
         formData.append('image', input);
         formData.append('object', object);
