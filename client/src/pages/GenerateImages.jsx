@@ -1,4 +1,4 @@
-import {Sparkles, Image } from 'lucide-react'
+import {Sparkles, Image, Download} from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useAuth } from '@clerk/clerk-react';
@@ -19,6 +19,8 @@ function GenerateImages() {
   const [ publish, setPublish ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ content, setContent ] = useState('');
+  const [downloadUrl, setDownloadUrl] = useState(''); // New state variable
+
   const { getToken } = useAuth();
 
   const onSubmitHandler = async (e) => {
@@ -26,12 +28,13 @@ function GenerateImages() {
       setLoading(true);
       try {
         const prompt = `Generate an image of ${input} in ${selectedStyle}`;
-        const { data } = await axios.post('/api/ai/generate-image', {prompt}, {
+        const { data } = await axios.post('/api/ai/generate-image', {prompt, publish}, {
           headers: {Authorization: `Bearer ${await getToken()}`}
         });
 
         if(data.success) {
           setContent(data.content);
+          setDownloadUrl(data.downloadUrl);
         }else {
           toast.error(data.message);
         }
@@ -71,7 +74,7 @@ function GenerateImages() {
           </div>
           <div className='mt-6 flex items-center gap-2'>
             <label className='relative cursor-pointer'>
-              <input type="checkbox" onClick={(e)=> setPublish(e.target.checked)} checked={publish} className='sr-only peer' />
+              <input type="checkbox" onChange={(e)=> setPublish(e.target.checked)} checked={publish} className='sr-only peer' />
               <div className='w-9 h-5 rounded-full bg-slate-300 peer-checked:bg-green-500 transition'></div>
               <span className='absolute left-1 top-1 w-3 h-3  bg-white rounded-full transition peer-checked:translate-x-4'></span>
             </label>
@@ -101,7 +104,14 @@ function GenerateImages() {
                 </div>
             </div>
             ): (
-                <div className='mt-3 h-full'>
+                <div className='relative mt-3 h-full'>
+                  <a
+                    href={downloadUrl} 
+                    download 
+                    className="absolute top-2 right-2 bg-white border rounded px-2 py-1 text-xs shadow hover:bg-gray-100"
+                    >
+                    <Download className='w-3 h-4' />
+                    </a>
                     <img src={content} alt='image' className='w-full h-full' />
                 </div>
             )}

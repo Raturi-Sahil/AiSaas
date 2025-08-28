@@ -34,6 +34,14 @@ function Community() {
   }
 
   const imageLikeToggle = async(id) => {
+      const isLiked = creations.find(c => c.id === id)?.likes?.includes(user?.id);
+      setCreations(prevCreations => prevCreations.map(creation => {
+          if(creation.id === id) {
+            const updatedLikes = isLiked ? creation.likes.filter(userId => userId != user?.id) : [...creation.likes, user.id];
+            return {...creation, likes: updatedLikes};
+          }
+          return creation;
+      }));
       try {
         const { data } = await axios.post('/api/user/toggle-like-creation', {id}, {
           headers: {Authorization: `Bearer ${await getToken()}`}
@@ -43,9 +51,23 @@ function Community() {
           toast.success(data.message);
           await fetchCreations();
         } else {
+          setCreations(prevCreations => prevCreations.map(creation => {
+          if(creation.id === id) {
+            const updatedLikes = isLiked ? creation.likes.filter(userId => userId != user?.id) : [...creation.likes, user.id];
+            return {...creation, likes: updatedLikes};
+          }
+          return creation;
+      }));
           toast.error(data.message);
         }
       } catch (error) {
+          setCreations(prevCreations => prevCreations.map(creation => {
+          if(creation.id === id) {
+            const updatedLikes = isLiked ? creation.likes.filter(userId => userId != user?.id) : [...creation.likes, user.id];
+            return {...creation, likes: updatedLikes};
+          }
+          return creation;
+        }));
           toast.error(error.message);
       }
   }

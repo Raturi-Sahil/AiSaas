@@ -1,4 +1,4 @@
-import { Sparkles, Eraser } from 'lucide-react'
+import { Sparkles, Eraser, Download } from 'lucide-react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useAuth } from '@clerk/clerk-react'
@@ -12,6 +12,8 @@ function RemoveBackground() {
   const [ input, setInput ] = useState('');
   const [ loading, setLoading ] = useState(false);
   const [ content, setContent ] = useState('');
+  const [downloadUrl, setDownloadUrl] = useState(''); // New state variable
+
   const { getToken } = useAuth();
 
   const onSubmitHandler = async (e) => {
@@ -26,6 +28,7 @@ function RemoveBackground() {
         });
         if(data.success) {
           setContent(data.content);
+          setDownloadUrl(data.downloadUrl);
         } else {
           toast.error(data.message);
         }
@@ -77,7 +80,14 @@ function RemoveBackground() {
                 </div>
             </div>
             ): (
-              <div className='mt-3 h-full'>
+              <div className='relative mt-3 h-full'>
+                    <a
+                    href={downloadUrl} 
+                    download 
+                    className="absolute top-2 right-2 bg-white border rounded px-2 py-1 text-xs shadow hover:bg-gray-100"
+                    >
+                    <Download className='w-3 h-4' />
+                    </a>
                     <img src={content} alt='image' className='w-full max-h-[400px] object-contain' />
                 </div>
             )}

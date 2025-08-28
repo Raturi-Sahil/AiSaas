@@ -131,7 +131,9 @@ export const generateImage = async (req, res) => {
 
         await sql`INSERT INTO creations (user_id, prompt, content, type, publish) VALUES (${userId}, ${prompt}, ${secure_url}, 'image', ${publish ?? false})`;
 
-        res.json({success: true, content: secure_url});
+        const downloadUrl = secure_url.replace("/upload/", "/upload/fl_attachment/");
+
+        res.json({success: true, content: secure_url, downloadUrl: downloadUrl});
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});
@@ -162,7 +164,8 @@ export const removeBackgroundImage = async (req, res) => {
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, 'Remove background form the image', ${secure_url}, 'image')`;
 
-        res.json({success: true, content: secure_url});
+        const downloadUrl = secure_url.replace("/upload/", "/upload/fl_attachment/");
+        res.json({success: true, content: secure_url, downloadUrl: downloadUrl});
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});
@@ -189,7 +192,9 @@ export const removeImageObject = async (req, res) => {
         })
 
         await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image')`;
-        res.json({success: true, content: imageUrl});
+
+        const downloadUrl = imageUrl.replace("/upload/", "/upload/fl_attachment/");
+        res.json({success: true, content: imageUrl, downloadUrl: downloadUrl});
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message});
