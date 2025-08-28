@@ -48,9 +48,10 @@ function Community() {
         });
 
         if(data.success) {
-          toast.success(data.message);
+          // toast.success(data.message); Revmoing this message as it feels redundant cuz a visual confirmation of red color is already there. 
           await fetchCreations();
         } else {
+          //Roll back the toggle
           setCreations(prevCreations => prevCreations.map(creation => {
           if(creation.id === id) {
             const updatedLikes = isLiked ? creation.likes.filter(userId => userId != user?.id) : [...creation.likes, user.id];
@@ -61,6 +62,7 @@ function Community() {
           toast.error(data.message);
         }
       } catch (error) {
+          //Roll back the toggle
           setCreations(prevCreations => prevCreations.map(creation => {
           if(creation.id === id) {
             const updatedLikes = isLiked ? creation.likes.filter(userId => userId != user?.id) : [...creation.likes, user.id];
