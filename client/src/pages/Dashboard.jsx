@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Sparkles, Gem } from 'lucide-react';
 import { Protect } from '@clerk/clerk-react';
 import { CreationItem } from '../components/index'

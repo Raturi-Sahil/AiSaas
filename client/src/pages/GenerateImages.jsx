@@ -91,7 +91,7 @@ function GenerateImages() {
       </form>
 
       {/**Right column */}
-        <div className='w-full max-w-xl border border-gray-200 rounded-lg bg-white p-5 min-h-96 max-h-[600px] flex flex-col'>
+        <div className='w-full max-w-xl border z-50 border-gray-200 rounded-lg bg-white p-5 min-h-96 max-h-[600px] flex flex-col'>
             <div className='flex items-center gap-1'>
               <Image className='w-5 h-5 text-[#01ad26]' />
               <h1 className='text-xl font-semibold'>Generated image</h1>
