@@ -40,8 +40,8 @@ function Footer() {
                 The latest news, articles, and resources, sent to your inbox weekly.
             </p>
             <div className='flex md:justify-start sm:justify-center'>
-                <input type="email" className='text-gray-500 rounded-md border border-gray-300 p-1 mr-1 text-md outline-neutral-300' placeholder='Enter your email' />
-                <button className='text-white rounded-md border border-gray-300 py-1 px-2 bg-blue-500 cursor-pointer text-sm hover:bg-blue-600' >Subscribe</button>
+                <input type="email" className='w-3/5 sm:w-2/3 text-gray-500 rounded-md border border-gray-300 p-1 mr-1 text-md outline-neutral-300' placeholder='Enter your email' />
+                <button className='text-white rounded-md border border-gray-300 py-1 px-3 bg-blue-500 cursor-pointer text-sm hover:bg-blue-600' >Subscribe</button>
             </div>
         </div>
     </div>
